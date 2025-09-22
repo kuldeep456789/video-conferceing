@@ -1,0 +1,135 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Video, Github, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const Signup = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // For now, redirect to dashboard - auth will be handled via Supabase later
+    window.location.href = "/dashboard";
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="flex items-center justify-center space-x-2 mb-8">
+          <div className="w-10 h-10 bg-gradient-to-r from-primary to-[hsl(250_84%_60%)] rounded-xl flex items-center justify-center">
+            <Video className="w-6 h-6 text-white" />
+          </div>
+          <span className="text-2xl font-bold">MeetFlow</span>
+        </div>
+
+        <Card className="glass-card">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Create your account</CardTitle>
+            <CardDescription>
+              Get started with MeetFlow in seconds
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            {/* Social Login Buttons */}
+            <div className="space-y-3">
+              <Button variant="outline" className="w-full" size="lg">
+                <Github className="w-5 h-5 mr-2" />
+                Continue with GitHub
+              </Button>
+              <Button variant="outline" className="w-full" size="lg">
+                <Mail className="w-5 h-5 mr-2" />
+                Continue with Google
+              </Button>
+            </div>
+
+            <div className="flex items-center">
+              <Separator className="flex-1" />
+              <span className="px-4 text-muted-foreground text-sm">or</span>
+              <Separator className="flex-1" />
+            </div>
+
+            {/* Signup Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First name</Label>
+                  <Input
+                    id="firstName"
+                    type="text"
+                    placeholder="John"
+                    required
+                    className="bg-background/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last name</Label>
+                  <Input
+                    id="lastName"
+                    type="text"
+                    placeholder="Doe"
+                    required
+                    className="bg-background/50"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  required
+                  className="bg-background/50"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Create a strong password"
+                  required
+                  className="bg-background/50"
+                />
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input type="checkbox" id="terms" className="rounded" required />
+                <Label htmlFor="terms" className="text-sm">
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-primary hover:underline">
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>
+                </Label>
+              </div>
+
+              <Button type="submit" className="btn-hero w-full" size="lg">
+                Create Account
+              </Button>
+            </form>
+
+            <div className="text-center">
+              <p className="text-muted-foreground">
+                Already have an account?{" "}
+                <Link to="/login" className="text-primary hover:underline font-medium">
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Signup;

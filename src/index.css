@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Video Conferencing App Design System - Dark Mode First */
+
+@layer base {
+  :root {
+    /* Dark theme as default */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 5.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 5.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 10% 8%;
+    --secondary-foreground: 240 5% 84%;
+
+    --muted: 240 6% 10%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 240 10% 8%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 6% 10%;
+    --input: 240 6% 10%;
+    --ring: 262 83% 58%;
+
+    --radius: 0.75rem;
+
+    /* Video conferencing specific colors */
+    --success: 142 69% 58%;
+    --success-foreground: 0 0% 98%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 98%;
+    
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 98%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(250 84% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(240 10% 5.9%), hsl(240 10% 8%));
+    --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%), hsl(250 84% 60%), hsl(199 89% 48%));
+    --gradient-card: linear-gradient(135deg, hsl(240 10% 5.9%) 0%, hsl(240 10% 7%) 100%);
+
+    /* Shadows and effects */
+    --shadow-glow: 0 0 50px hsl(262 83% 58% / 0.3);
+    --shadow-card: 0 4px 6px -1px hsl(240 10% 3.9% / 0.1), 0 2px 4px -1px hsl(240 10% 3.9% / 0.06);
+    --shadow-elevated: 0 10px 15px -3px hsl(240 10% 3.9% / 0.1), 0 4px 6px -2px hsl(240 10% 3.9% / 0.05);
+
+    /* Animation timings */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 262 83% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+@layer components {
+  /* Hero button variant */
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary to-[hsl(250_84%_60%)] text-primary-foreground font-semibold px-8 py-4 rounded-xl hover:shadow-[var(--shadow-glow)] transition-all duration-300 transform hover:scale-105;
+  }
+
+  /* Glass card effect */
+  .glass-card {
+    @apply bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-lg border border-border/50 rounded-2xl shadow-[var(--shadow-card)];
+  }
+
+  /* Floating action button */
+  .btn-float {
+    @apply bg-gradient-to-r from-primary to-[hsl(250_84%_60%)] text-primary-foreground rounded-full p-4 shadow-[var(--shadow-elevated)] hover:shadow-[var(--shadow-glow)] transition-all duration-300 transform hover:scale-110;
+  }
+
+  /* Video grid layouts */
+  .video-grid-1 {
+    @apply grid grid-cols-1 gap-4 h-full;
+  }
+
+  .video-grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4 h-full;
+  }
+
+  .video-grid-4 {
+    @apply grid grid-cols-2 gap-4 h-full;
+  }
+
+  .video-grid-6 {
+    @apply grid grid-cols-2 md:grid-cols-3 gap-4 h-full;
+  }
+
+  /* Meeting toolbar */
+  .toolbar-btn {
+    @apply p-3 rounded-full bg-muted/50 hover:bg-muted transition-colors duration-200 text-foreground hover:text-primary;
+  }
+
+  .toolbar-btn-active {
+    @apply p-3 rounded-full bg-primary text-primary-foreground;
+  }
+
+  .toolbar-btn-danger {
+    @apply p-3 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90;
+  }
+
+  /* Notification styles */
+  .notification-toast {
+    @apply glass-card p-4 text-sm font-medium animate-in slide-in-from-top-2 duration-300;
+  }
+}
+
+@layer utilities {
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 20px hsl(262 83% 58% / 0.2);
+    }
+    to {
+      box-shadow: 0 0 30px hsl(262 83% 58% / 0.4);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
