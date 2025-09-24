@@ -17,57 +17,21 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
 const Dashboard = () => {
   const [meetingCode, setMeetingCode] = useState("");
   
   const upcomingMeetings = [
-    {
-      id: "1",
-      title: "Team Standup",
-      time: "10:00 AM",
-      date: "Today",
-      participants: 5,
-      roomId: "team-standup-123"
-    },
-    {
-      id: "2", 
-      title: "Client Review",
-      time: "2:00 PM",
-      date: "Today",
-      participants: 3,
-      roomId: "client-review-456"
-    },
-    {
-      id: "3",
-      title: "Project Planning",
-      time: "9:00 AM",
-      date: "Tomorrow",
-      participants: 8,
-      roomId: "project-planning-789"
-    }
+    { id: "1", title: "Team Standup", time: "10:00 AM", date: "Today", participants: 5, roomId: "team-standup-123" },
+    { id: "2", title: "Client Review", time: "2:00 PM", date: "Today", participants: 3, roomId: "client-review-456" },
+    { id: "3", title: "Project Planning", time: "9:00 AM", date: "Tomorrow", participants: 8, roomId: "project-planning-789" }
   ];
 
   const recentMeetings = [
-    {
-      id: "1",
-      title: "Design Review",
-      date: "Yesterday",
-      duration: "45 min",
-      participants: 4
-    },
-    {
-      id: "2",
-      title: "Sprint Planning",
-      date: "2 days ago", 
-      duration: "1h 30min",
-      participants: 7
-    }
+    { id: "1", title: "Design Review", date: "Yesterday", duration: "45 min", participants: 4 },
+    { id: "2", title: "Sprint Planning", date: "2 days ago", duration: "1h 30min", participants: 7 }
   ];
 
-  const generateRoomId = () => {
-    return Math.random().toString(36).substr(2, 9);
-  };
+  const generateRoomId = () => Math.random().toString(36).substr(2, 9);
 
   const startInstantMeeting = () => {
     const roomId = generateRoomId();
@@ -75,15 +39,13 @@ const Dashboard = () => {
   };
 
   const joinMeeting = () => {
-    if (meetingCode.trim()) {
-      window.location.href = `/room/${meetingCode}`;
-    }
+    if (meetingCode.trim()) window.location.href = `/room/${meetingCode}`;
   };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-background/95 backdrop-blur">
+      {/* Fixed Header */}
+      <header className="fixed top-0 w-full z-50 border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-primary to-[hsl(250_84%_60%)] rounded-lg flex items-center justify-center">
@@ -95,8 +57,7 @@ const Dashboard = () => {
           <div className="flex items-center space-x-4">
             <Link to="/profile">
               <Button variant="ghost" size="sm">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
+                <Settings className="w-4 h-4 mr-2" /> Settings
               </Button>
             </Link>
             <Avatar className="cursor-pointer">
@@ -107,7 +68,9 @@ const Dashboard = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      {/* Main Content */}
+      {/* Add padding top to avoid content being hidden behind fixed header */}
+      <div className="container mx-auto px-4 py-24">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
@@ -119,18 +82,11 @@ const Dashboard = () => {
                     <Video className="w-5 h-5 mr-2 text-primary" />
                     Start Meeting
                   </CardTitle>
-                  <CardDescription>
-                    Create an instant meeting room
-                  </CardDescription>
+                  <CardDescription>Create an instant meeting room</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button 
-                    onClick={startInstantMeeting}
-                    className="btn-hero w-full"
-                    size="lg"
-                  >
-                    <Play className="w-5 h-5 mr-2" />
-                    Start Instant Meeting
+                  <Button onClick={startInstantMeeting} className="btn-hero w-full" size="lg">
+                    <Play className="w-5 h-5 mr-2" /> Start Instant Meeting
                   </Button>
                 </CardContent>
               </Card>
@@ -138,12 +94,9 @@ const Dashboard = () => {
               <Card className="glass-card">
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <Users className="w-5 h-5 mr-2 text-primary" />
-                    Join Meeting
+                    <Users className="w-5 h-5 mr-2 text-primary" /> Join Meeting
                   </CardTitle>
-                  <CardDescription>
-                    Enter a meeting code to join
-                  </CardDescription>
+                  <CardDescription>Enter a meeting code to join</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Input
@@ -152,13 +105,7 @@ const Dashboard = () => {
                     onChange={(e) => setMeetingCode(e.target.value)}
                     className="bg-background/50"
                   />
-                  <Button 
-                    onClick={joinMeeting}
-                    variant="outline" 
-                    className="w-full"
-                    size="lg"
-                    disabled={!meetingCode.trim()}
-                  >
+                  <Button onClick={joinMeeting} variant="outline" className="w-full" size="lg" disabled={!meetingCode.trim()}>
                     Join Meeting
                   </Button>
                 </CardContent>
@@ -170,52 +117,33 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <Calendar className="w-5 h-5 mr-2 text-primary" />
-                    Upcoming Meetings
+                    <Calendar className="w-5 h-5 mr-2 text-primary" /> Upcoming Meetings
                   </div>
                   <Button variant="outline" size="sm">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Schedule
+                    <Plus className="w-4 h-4 mr-2" /> Schedule
                   </Button>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {upcomingMeetings.map((meeting) => (
-                    <div 
-                      key={meeting.id}
-                      className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors"
-                    >
+                  {upcomingMeetings.map(meeting => (
+                    <div key={meeting.id} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
                       <div className="flex-1">
                         <h4 className="font-medium">{meeting.title}</h4>
                         <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                          <span className="flex items-center">
-                            <Clock className="w-4 h-4 mr-1" />
-                            {meeting.time}
-                          </span>
+                          <span className="flex items-center"><Clock className="w-4 h-4 mr-1" /> {meeting.time}</span>
                           <span>{meeting.date}</span>
-                          <span className="flex items-center">
-                            <Users className="w-4 h-4 mr-1" />
-                            {meeting.participants}
-                          </span>
+                          <span className="flex items-center"><Users className="w-4 h-4 mr-1" /> {meeting.participants}</span>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => navigator.clipboard.writeText(`${window.location.origin}/room/${meeting.roomId}`)}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(`${window.location.origin}/room/${meeting.roomId}`)}>
                           <Copy className="w-4 h-4" />
                         </Button>
                         <Link to={`/room/${meeting.roomId}`}>
-                          <Button size="sm" className="btn-hero">
-                            Join
-                          </Button>
+                          <Button size="sm" className="btn-hero">Join</Button>
                         </Link>
-                        <Button variant="ghost" size="sm">
-                          <MoreVertical className="w-4 h-4" />
-                        </Button>
+                        <Button variant="ghost" size="sm"><MoreVertical className="w-4 h-4" /></Button>
                       </div>
                     </div>
                   ))}
@@ -230,13 +158,12 @@ const Dashboard = () => {
             <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Clock className="w-5 h-5 mr-2 text-primary" />
-                  Recent Meetings
+                  <Clock className="w-5 h-5 mr-2 text-primary" /> Recent Meetings
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentMeetings.map((meeting) => (
+                  {recentMeetings.map(meeting => (
                     <div key={meeting.id} className="space-y-2">
                       <h4 className="font-medium text-sm">{meeting.title}</h4>
                       <div className="text-xs text-muted-foreground space-y-1">
@@ -246,9 +173,7 @@ const Dashboard = () => {
                           <span>{meeting.participants} participants</span>
                         </div>
                       </div>
-                      {meeting.id !== recentMeetings[recentMeetings.length - 1].id && (
-                        <Separator className="my-4" />
-                      )}
+                      {meeting.id !== recentMeetings[recentMeetings.length - 1].id && <Separator className="my-4" />}
                     </div>
                   ))}
                 </div>
