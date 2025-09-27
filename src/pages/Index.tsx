@@ -35,7 +35,6 @@ const features = [
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Close mobile menu on resize > md
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) setIsMobileMenuOpen(false);
@@ -76,15 +75,19 @@ const Navbar = () => {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <span className="sr-only">Open menu</span>
-            {/* Hamburger icon */}
-            <div className="w-6 h-0.5 bg-foreground mb-1 transition-all duration-300" style={{ transform: isMobileMenuOpen ? "rotate(45deg) translateY(8px)" : "none" }} />
-            <div className="w-6 h-0.5 bg-foreground mb-1 transition-all duration-300" style={{ opacity: isMobileMenuOpen ? 0 : 1 }} />
-            <div className="w-6 h-0.5 bg-foreground transition-all duration-300" style={{ transform: isMobileMenuOpen ? "rotate(-45deg) translateY(-8px)" : "none" }} />
+            <div className="w-6 h-0.5 bg-foreground mb-1 transition-all duration-300"
+              style={{ transform: isMobileMenuOpen ? "rotate(45deg) translateY(8px)" : "none" }}
+            />
+            <div className="w-6 h-0.5 bg-foreground mb-1 transition-all duration-300"
+              style={{ opacity: isMobileMenuOpen ? 0 : 1 }}
+            />
+            <div className="w-6 h-0.5 bg-foreground transition-all duration-300"
+              style={{ transform: isMobileMenuOpen ? "rotate(-45deg) translateY(-8px)" : "none" }}
+            />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background/95 border-t border-border backdrop-blur-md">
           <div className="flex flex-col items-center py-4 space-y-3">
@@ -102,16 +105,15 @@ const Navbar = () => {
 };
 
 const Index = () => {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark" | "mixed">("light");
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [theme, setTheme] = useState("light");
 
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = (event) => {
     if (event.target.files && event.target.files[0]) {
       setUploadedImage(URL.createObjectURL(event.target.files[0]));
     }
   };
 
-  // Apply theme to body
   useEffect(() => {
     const body = document.body;
     body.classList.remove("light", "dark", "mixed-theme");
@@ -120,7 +122,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-500">
-      {/* Navbar */}
       <Navbar />
 
       {/* Hero Section */}
@@ -131,7 +132,6 @@ const Index = () => {
           <p className="text-lg text-white/80 mb-8">
             Connect seamlessly.
           </p>
-
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/dashboard">
               <Button className="btn-hero text-lg px-8 py-6 animate-glow flex items-center justify-center">
@@ -149,12 +149,10 @@ const Index = () => {
       <section className="py-24 bg-gradient-to-b from-background to-muted/20">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-16">Team Collaboration</h2>
-
           <Swiper
             spaceBetween={20}
             slidesPerView={1}
             breakpoints={{ 640: { slidesPerView: 2 }, 1024: { slidesPerView: 4 } }}
-            autoplay={{ delay: 2500, disableOnInteraction: false }}
             loop
           >
             {features.map((feature, idx) => (

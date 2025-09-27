@@ -1,16 +1,36 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Video, Github, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { apiRequest } from "@/lib/api";
 
 const Login = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // For now, redirect to dashboard - auth will be handled via Supabase later
-    window.location.href = "/dashboard";
+
+    try {
+      const data = await apiRequest("/login", "POST", { email, password });
+
+      if (data?.access_token) {
+        // ✅ Save JWT & user info
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        navigate("/dashboard"); // redirect
+      } else {
+        alert("Login failed: No token received");
+      }
+    } catch (err: any) {
+      alert(err?.message || "Login failed. Please try again.");
+    }
   };
 
   return (
@@ -27,21 +47,17 @@ const Login = () => {
         <Card className="glass-card">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>
-              Sign in to your account to continue
-            </CardDescription>
+            <CardDescription>Sign in to your account to continue</CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
-            {/* Social Login Buttons */}
+            {/* Social Buttons */}
             <div className="space-y-3">
               <Button variant="outline" className="w-full" size="lg">
-                <Github className="w-5 h-5 mr-2" />
-                Continue with GitHub
+                <Github className="w-5 h-5 mr-2" /> Continue with GitHub
               </Button>
               <Button variant="outline" className="w-full" size="lg">
-                <Mail className="w-5 h-5 mr-2" />
-                Continue with Google
+                <Mail className="w-5 h-5 mr-2" /> Continue with Google
               </Button>
             </div>
 
@@ -58,27 +74,31 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="bg-background/50"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
-                  className="bg-background/50"
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <input type="checkbox" id="remember" className="rounded" />
-                  <Label htmlFor="remember" className="text-sm">Remember me</Label>
+                  <Label htmlFor="remember" className="text-sm">
+                    Remember me
+                  </Label>
                 </div>
                 <Link to="/forgot-password" className="text-sm text-primary hover:underline">
                   Forgot password?
@@ -92,7 +112,7 @@ const Login = () => {
 
             <div className="text-center">
               <p className="text-muted-foreground">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link to="/signup" className="text-primary hover:underline font-medium">
                   Sign up
                 </Link>
