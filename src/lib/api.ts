@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// ✅ Default to Flask backend if env is missing
+// Default to Flask backend if env var is missing
 export const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -15,13 +15,13 @@ export async function apiRequest(
   method = "GET",
   body?: any
 ) {
+  const token = localStorage.getItem("token");
+
   const res = await fetch(`${API_URL}${endpoint}`, {
     method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: localStorage.getItem("token")
-        ? `Bearer ${localStorage.getItem("token")}`
-        : "",
+      Authorization: token ? `Bearer ${token}` : "",
     },
     body: body ? JSON.stringify(body) : undefined,
   });
@@ -29,7 +29,7 @@ export async function apiRequest(
   let data: any = null;
 
   try {
-    // Safely parse JSON only if available
+    // Safely parse JSON only if response text exists
     const text = await res.text();
     data = text ? JSON.parse(text) : null;
   } catch (err) {
