@@ -17,9 +17,19 @@ app.config.from_object(Config)
 # ✅ JWT secret from env (fallback if missing)
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "supersecret")
 
-# ✅ CORS allowed origins from env (comma-separated list)
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:8080").split(",")
-CORS(app, origins=CORS_ALLOWED_ORIGINS, supports_credentials=True)
+# ✅ CORS allowed origins from env (comma-separated list, works for dev + prod)
+CORS_ALLOWED_ORIGINS = os.getenv(
+    "CORS_ALLOWED_ORIGINS",
+    "http://localhost:8080,http://127.0.0.1:3000,https://your-frontend-domain.com"
+).split(",")
+
+CORS(
+    app,
+    origins=[origin.strip() for origin in CORS_ALLOWED_ORIGINS],
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+)
 
 db.init_app(app)
 jwt = JWTManager(app)
