@@ -8,21 +8,22 @@ from models import db, User
 from flask_jwt_extended import JWTManager, create_access_token
 from dotenv import load_dotenv
 
-# ✅ Load .env variables
+# Load environment variables from .env
 load_dotenv()
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# ✅ JWT secret from env (fallback if missing)
+# JWT secret key configuration from env variables with fallback
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "supersecret")
 
-# ✅ CORS allowed origins from env (comma-separated list, works for dev + prod)
+# Get CORS allowed origins from env variable or default localhost/dev URLS
 CORS_ALLOWED_ORIGINS = os.getenv(
     "CORS_ALLOWED_ORIGINS",
-    "http://localhost:8080,http://127.0.0.1:3000,https://your-frontend-domain.com"
+    "http://localhost:8080,http://127.0.0.1:3000,https://video-conferencing.vercel.app"
 ).split(",")
 
+# Initialize CORS with configured origins and options
 CORS(
     app,
     origins=[origin.strip() for origin in CORS_ALLOWED_ORIGINS],
@@ -31,14 +32,13 @@ CORS(
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 )
 
+# Initialize database and JWT manager
 db.init_app(app)
 jwt = JWTManager(app)
-
 
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({"message": "Internal server error", "details": str(error)}), 500
-
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -65,7 +65,6 @@ def signup():
 
     return jsonify({"message": "User created successfully"}), 201
 
-
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
@@ -89,7 +88,6 @@ def login():
             "email": user.email
         }
     }), 200
-
 
 if __name__ == '__main__':
     with app.app_context():
